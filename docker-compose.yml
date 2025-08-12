@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PROJECT_NAME=FastAPI App
+      - VERSION=0.1.0
+      - SECRET_KEY=production-secret-key-change-me
+      - DATABASE_URL=sqlite+aiosqlite:///./app.db
+    volumes:
+      - ./app.db:/app/app.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # PostgreSQL version (uncomment if needed)
+  # db:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_DB: fastapi_db
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   restart: unless-stopped
+
+  # app-postgres:
+  #   build: .
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - PROJECT_NAME=FastAPI App
+  #     - VERSION=0.1.0
+  #     - SECRET_KEY=production-secret-key-change-me
+  #     - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/fastapi_db
+  #   depends_on:
+  #     - db
+  #   restart: unless-stopped
+
+# volumes:
+#   postgres_data:

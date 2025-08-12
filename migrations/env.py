@@ -10,6 +10,11 @@ from alembic import context
 from app.db.base import Base
 from app.core.config import settings
 
+# 确保 Alembic 可以检测到所有模型
+from app.models.post import Post  # noqa
+from app.models.user import User  # noqa
+from app.models.ai import AIModel
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
