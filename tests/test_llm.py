@@ -2,7 +2,7 @@
 Test LLM module functionality
 """
 import pytest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 from app.llm import (
     resolve_model, 
     normalize_messages, 
@@ -116,6 +116,9 @@ class TestGenerateSync:
         }
         mock_openai.return_value.invoke.return_value = mock_response
         
+        # Mock dict conversion
+        mock_response.__iter__ = Mock(return_value=iter([]))
+        
         # Test
         req = GenerateRequest(
             model_name="gpt-4o-mini",
@@ -146,6 +149,9 @@ class TestGenerateSync:
             "total_token_count": 40
         }
         mock_gemini.return_value.invoke.return_value = mock_response
+        
+        # Mock dict conversion
+        mock_response.__iter__ = Mock(return_value=iter([]))
         
         # Test
         req = GenerateRequest(

@@ -60,14 +60,6 @@ def event_loop():
     loop.close()
 
 
-@pytest.fixture
-def sample_post_data():
-    """Sample post data for testing"""
-    return {
-        "title": "Test Post",
-        "content": "This is test content",
-        "author": "Test Author"
-    }
 
 
 @pytest.fixture
