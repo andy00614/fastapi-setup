@@ -9,5 +9,7 @@ class Settings(BaseSettings):
     VERSION: str = "0.1.0"
     SECRET_KEY: str = "dev-key"
     DATABASE_URL: str | None = None
+    OPENAI_API_KEY: str = ""
+    GOOGLE_API_KEY: str = ""
 
 settings = Settings()
