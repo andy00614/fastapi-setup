@@ -1,10 +1,15 @@
+# app/api/v1/api.py
 from fastapi import APIRouter
-from app.api.v1.posts import router as posts_router
+from fastapi.responses import JSONResponse, StreamingResponse
+from app.schemas.llm import GenerateRequest
+from app.llm import generate_sync, generate_stream
 
+model_router = APIRouter(prefix="/v1", tags=["llm"])
 
-api_router = APIRouter()
-api_router.include_router(posts_router,prefix="/posts",tags=["posts"])
-
-@api_router.get("/ping")
-async def ping():
-    return {"pong": True}
+@model_router.post("/generate")
+def generate(req: GenerateRequest):
+    if req.stream:
+        return StreamingResponse(generate_stream(req), media_type="text/event-stream")
+    else:
+        out = generate_sync(req)
+        return JSONResponse(out.model_dump())
